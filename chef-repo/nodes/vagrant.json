@@ -1,0 +1,8 @@
+{
+  "run_list":[
+    "recipe[yum]",
+    "recipe[git]",
+    "recipe[rbenv::default]",
+    "recipe[rbenv::install]"
+  ]
+}
