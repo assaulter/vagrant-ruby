@@ -19,7 +19,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip:"192.168.50.12"
+  config.vm.define :web do |web|
+    web.vm.hostname = "web"
+    config.vm.network :private_network, ip:"192.168.50.12", virtualbox__intnet: "intnet"
+    web.vm.synced_folder "/Users/kazukikubo/Developer/office/megane-rails", "/srv/"
+  end
+
+  config.vm.define :mock do |mock|
+    mock.vm.hostname = "mock"
+    config.vm.network :private_network, ip:"192.168.50.24", virtualbox__intnet: "intnet"
+    mock.vm.synced_folder "/Users/kazukikubo/Developer/office/hp-api-mock", "/srv/"
+  end
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -34,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "/Users/kazukikubo/Developer/office/megane-rails", "/srv/"
+  # config.vm.synced_folder "/Users/kazukikubo/Developer/office/megane-rails", "/srv/"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -42,7 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provider :virtualbox do |vb|
     # Don't boot with headless mode
-    vb.gui = true
+    vb.gui = false
      # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end

@@ -2,3 +2,4 @@ site :opscode
 
 cookbook 'yum'
 cookbook 'git'
+cookbook 'simple_iptables', git:"git://github.com/dcrosta/cookbook-simple-iptables.git"
